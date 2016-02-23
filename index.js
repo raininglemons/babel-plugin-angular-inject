@@ -43,6 +43,45 @@ function childOfModule (object, bindings) {
         return false;
 }
 
+/**
+ * Function to trace an argument back to the original referenced function
+ * @param object
+ * @param scope
+ * @returns {*}
+ */
+function followTheYellowBrickRoad (object, scope) {
+    try {
+        switch (object.type) {
+            case "Identifier":
+                return followTheYellowBrickRoad(scope.bindings[object.name].path.node, scope.bindings[object.name].scope);
+
+            case "FunctionExpression":
+            case "FunctionDeclaration":
+            case "ArrowFunctionExpression":
+                return object;
+
+            case "VariableDeclaration":
+                return followTheYellowBrickRoad(object.declarations[0].init, scope);
+
+            case "VariableDeclarator":
+                return followTheYellowBrickRoad(object.init, bindings);
+
+            case "MemberExpression":
+                let mappedValue = scope.bindings[object.object.name].path.node.init.properties
+                    .filter(prop => prop.key.name === object.property.name)
+                    .map(prop => prop.value);
+                if (mappedValue.length > 0)
+                    return followTheYellowBrickRoad(mappedValue[0], scope.bindings[object.object.name].path.scope)
+
+            default:
+                return null;
+        }
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
+}
+
 module.exports = function angularInject (babel) {
     let t = babel.types;
     return {
@@ -76,17 +115,12 @@ module.exports = function angularInject (babel) {
                     !childOfModule(path.node, path.scope.bindings))
                     return false;
 
-                let fn = path.node["arguments"][1];
+                let fn = path.node["arguments"][1],
+                    fnNode = followTheYellowBrickRoad(fn, path.scope);
 
-                // Follow variable to source if not a direct function
-                //
-                let fnNode = fn.type === "FunctionExpression" || fn.type === "ArrowFunctionExpression" ?
-                    fn : path.scope.bindings[fn.name].path.node;
+                if (fnNode === null)
+                    return false;
 
-                // Check if we've not mapped straight to a function
-                //
-                if (fnNode.type === "VariableDeclaration")
-                    fnNode = fnNode.declarations[0].init;
 
                 // Build array of angular references
                 //
