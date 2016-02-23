@@ -1,5 +1,5 @@
 /**
- * CURRENTLY ONLY SUPPORTS ES5 SYNTAX, RUN ES6 TRANSPILER FIRST!
+ * Supports es6 with the es2015 preset :D
  *
  * Super useful:
  *  http://astexplorer.net/
@@ -64,14 +64,14 @@ function followTheYellowBrickRoad (object, scope) {
                 return followTheYellowBrickRoad(object.declarations[0].init, scope);
 
             case "VariableDeclarator":
-                return followTheYellowBrickRoad(object.init, bindings);
+                return followTheYellowBrickRoad(object.init, scope);
 
             case "MemberExpression":
                 let mappedValue = scope.bindings[object.object.name].path.node.init.properties
                     .filter(prop => prop.key.name === object.property.name)
                     .map(prop => prop.value);
                 if (mappedValue.length > 0)
-                    return followTheYellowBrickRoad(mappedValue[0], scope.bindings[object.object.name].path.scope)
+                    return followTheYellowBrickRoad(mappedValue[0], scope.bindings[object.object.name].path.scope);
 
             default:
                 return null;
