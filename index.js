@@ -10,7 +10,7 @@
  * List of functions we should intercept
  * @type {string[]}
  */
-const injectables = ["controller", "directive"],
+const injectables = ["controller", "directive", "factory", "filter", "config", "run"],
     /**
      * Returns the callee function name
      * @param node
@@ -25,7 +25,8 @@ const injectables = ["controller", "directive"],
 
 /**
  * Check whether a callee is a child of a module function
- * @param callee
+ * @param object
+ * @param bindings
  * @returns {boolean}
  */
 function childOfModule (object, bindings) {
@@ -68,18 +69,19 @@ module.exports = function angularInject (babel) {
              */
             CallExpression (path) {
                 if (// Secondly, check arguments list contains at least two
-                    path.node.arguments.length < 2 ||
+                    path.node["arguments"].length < 2 ||
                     // Thirdly, check callee exists in allowed injectables list
                     injectables.indexOf(calleeName(path.node)) === -1 ||
                     // finally, check expressions stems from a module() invocation
                     !childOfModule(path.node, path.scope.bindings))
                     return false;
 
-                let fn = path.node.arguments[1];
+                let fn = path.node["arguments"][1];
 
                 // Follow variable to source if not a direct function
                 //
-                let fnNode = fn.type === "FunctionExpression" || fn.type === "ArrowFunctionExpression" ? fn : path.scope.bindings[fn.name].path.node;
+                let fnNode = fn.type === "FunctionExpression" || fn.type === "ArrowFunctionExpression" ?
+                    fn : path.scope.bindings[fn.name].path.node;
 
                 // Check if we've not mapped straight to a function
                 //
@@ -97,7 +99,7 @@ module.exports = function angularInject (babel) {
 
                 references.push(fn);
 
-                path.node.arguments[1] = t.arrayExpression(references);
+                path.node["arguments"][1] = t.arrayExpression(references);
             }
         }
     };
