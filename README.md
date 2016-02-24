@@ -1,12 +1,12 @@
 
                                          /~\
-                                        |oo )     npm install
-                                        _\=/_      npm test
-                        ___            /  _  \
-                       / ()\          //|/.\|\\
-                     _|_____|_       //  \_/  ||
-                    | | === | |     //  |\ /| ||
-                    |_|  O  |_|     #   \_ _/ #
+                                        |oo )     npm install       ☑ Functions
+                                        _\=/_      npm test         ☑ Classes
+                        ___            /  _  \                      ☑ Arrow functions
+                       / ()\          //|/.\|\\                     ☑ Fns from vars
+                     _|_____|_       //  \_/  ||                    - Fns from object prop
+                    | | === | |     //  |\ /| ||                    ☑   Defined on init
+                    |_|  O  |_|     #   \_ _/ #                     ☒   Defined after init
                      ||  O  ||          | | |
                      ||__*__||          | | |
                     |~ \___/ ~|         []|[]
