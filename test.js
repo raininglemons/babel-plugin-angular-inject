@@ -14,6 +14,17 @@ class controllerFunction {
     }
 }
 
+
+class complicatedControllerFunction {
+    constructor (injecto) {
+        this.injecto = injecto;
+    }
+
+    somethingelse () {
+        return true;
+    }
+}
+
 class ignoredController {
     constructor (injecto) {
         this.injecto = injecto;
@@ -35,6 +46,9 @@ angular
     // es6 class
     //
     .controller("nameOfController", controllerFunction)
+    // es6 complicated class
+    //
+    .controller("complicatedController", complicatedControllerFunction)
     // Controller with $inject already defined
     //
     .controller("ignoredController", ignoredController)

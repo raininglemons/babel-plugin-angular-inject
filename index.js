@@ -60,6 +60,15 @@ function followTheYellowBrickRoad (object, scope) {
             case "ArrowFunctionExpression":
                 return object;
 
+            case "CallExpression":
+                // Check whether this is a converted class
+                //
+                if (object.callee && object.callee.body
+                    && object.callee.body.type === "BlockStatement")
+                    return followPossibleTranspiledClass(object.callee.body.body);
+                else
+                    return null;
+
             case "VariableDeclaration":
                 return followTheYellowBrickRoad(object.declarations[0].init, scope);
 
@@ -80,6 +89,30 @@ function followTheYellowBrickRoad (object, scope) {
         console.error(e);
         return null;
     }
+}
+
+/**
+ * Digs out the function from a possibly transpiled class (from es6 -> es5)
+ * @param object
+ * @returns {*}
+ */
+function followPossibleTranspiledClass (object) {
+    if (object.length !== 3)
+        return null;
+
+    // Check first node is a function declaration and last is a return
+    //
+    if (object[0].type !== "FunctionDeclaration" || object[2].type !== "ReturnStatement")
+        return null;
+
+    // Check first function is same function passed to return
+    //
+    if (object[0].id.name === object[2].argument.name)
+        return object[0];
+
+    // Else, no idea, ignore it
+    //
+    return null;
 }
 
 module.exports = function angularInject (babel) {
