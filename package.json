@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-angular-inject",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Babel plugin to generate angular $inject data for providers",
   "main": "index.js",
   "scripts": {
