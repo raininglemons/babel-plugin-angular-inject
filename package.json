@@ -20,5 +20,11 @@
   "bugs": {
     "url": "https://github.com/raininglemons/babel-plugin-angular-inject/issues"
   },
+  "keywords": [
+    "babel",
+    "babel-plugin",
+    "angular",
+    "inject"
+  ],
   "homepage": "https://github.com/raininglemons/babel-plugin-angular-inject#readme"
 }
