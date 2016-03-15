@@ -38,7 +38,7 @@ Add `babel-plugin-angular-inject` as a plugin to your gulp build task:
             .pipe(babel({
                 presets: ["es2015"],
                 plugins: [
-                    require("./index.js")
+                    require("babel-plugin-angular-inject")
                 ]
             }))
             .pipe(gulp.dest('dist'))
