@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-angular-inject",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Babel plugin to generate angular $inject data for providers",
   "main": "index.js",
   "scripts": {
@@ -11,8 +11,10 @@
   "devDependencies": {
     "babel-core": "^6.7.2",
     "babel-preset-es2015": "^6.5.0",
+    "codecov": "^1.0.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
+    "istanbul": "^0.4.2",
     "jasmine-node": "^1.14.5"
   },
   "repository": {
