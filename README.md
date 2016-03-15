@@ -1,3 +1,6 @@
+## babel-plugin-angular-inject
+[![Build Status](https://travis-ci.org/raininglemons/babel-plugin-angular-inject.svg?branch=master)](https://travis-ci.org/raininglemons/babel-plugin-angular-inject)
+
 
                                          /~\
                                         |oo )     npm install       ☑ Functions
